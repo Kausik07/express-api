@@ -3,7 +3,6 @@ const cors = require('cors')
 const helmet = require('helmet')
 const morgan = require('morgan')
 const { PORT } = require('./configs')
-const router = require('./routers')
 
 require('dotenv').config()
 
@@ -18,8 +17,9 @@ app.get('/health', (req, res) => {
 })
 
 console.log('☄', 'Base Route', '/api')
+const router = require('./routers')
 app.use('/api', router)
 
 app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`)
+    console.log(`🚀 API listening on port ${PORT}`)
 })

@@ -23,7 +23,7 @@ const loadRoutes = async (dirPath, prefix = '/') => {
                     ''
                 )
                 const modRoute = path.join(prefix, route)
-                console.log('🛰️', 'Loaded', modRoute)
+                console.log('🛰️  Loaded', modRoute)
 
                 const mod = await import(path.join(baseDir, f.name))
 
@@ -36,7 +36,6 @@ const loadRoutes = async (dirPath, prefix = '/') => {
 }
 
 let baseDir = path.dirname(__filename)
-console.log(baseDir)
 baseDir = path.resolve(baseDir)
 
 loadRoutes(baseDir)
