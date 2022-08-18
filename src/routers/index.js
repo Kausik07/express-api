@@ -28,6 +28,7 @@ const loadRoutes = async (dirPath, prefix = '/') => {
                 const mod = await import(path.join(baseDir, f.name))
 
                 router.use(modRoute, mod.default)
+                // router.use("/user",require("./user.routes.js"))
             }
         } else if (f.isDirectory()) {
             await loadRoutes(path.resolve(dirPath, f.name), prefix + f.name)
