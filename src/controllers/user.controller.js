@@ -1,5 +1,6 @@
 const User = require('../models/user.model')
 const { generateJWT } = require('../lib/auth.adapter')
+const { sendMail } = require('../services/mail.service')
 
 async function createUser(req, res, next) {
     try {
@@ -17,9 +18,11 @@ async function createUser(req, res, next) {
         await user.setPassword(password)
         await user.generateEmailVerificationToken()
         await user.save()
+        await sendMail(user.email,"Welcome and Verify", user.attributes.emailVerificationToken)
         res.status(201).json({
             status: 'success',
             message: 'User created successfully',
+            error: null,
             data: {
                 username: user.username,
                 email: user.email,
@@ -29,7 +32,7 @@ async function createUser(req, res, next) {
         })
     }
     catch(err){
-        next()
+        next(err)
     }
 }
 
@@ -47,13 +50,14 @@ async function loginUser(req, res, next) {
         res.status(200).json({
             status: 'success',
             message: 'User logged in successfully',
+            error: null,
             data: {
                 access_token: token,
             }
         })
     }
     catch(err){
-        next()
+        next(err)
     }
 }
 
@@ -66,14 +70,21 @@ async function verifyEmail(req, res, next) {
             throw new Error('Unable to verify Email Verification Token')
         }
         else{
-        await user.save()
-            res.status(200).json({
-                status: 'success',
-                message: 'Email verified successfully',
-            })
-        }
+            await user.save()
+                res.status(200).json({
+                    status: 'success',
+                    message: 'Email verified successfully',
+                    error: null,
+                })
+            }
     }
     catch(err){
-        next()
+        next(err)
     }
+}
+
+module.exports = {
+    loginUser,
+    createUser,
+    verifyEmail,
 }
