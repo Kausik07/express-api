@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
         lastResetDate: {
             type: Date,
             default: null
+        },
+        isDisabled: {
+            type: Boolean,
+            default: false
         }
     },
     hash: {

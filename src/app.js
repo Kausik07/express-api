@@ -31,6 +31,14 @@ app.use((err, req, res, next) => {
     })
 })
 
+app.use("*", (req, res) => {
+    res.status(404).json({
+        status: "error",
+        message: "Not found",
+        error: true,
+    })
+})
+
 app.listen(PORT, () => {
     connectMongo()
     console.log(`🚀 API listening on port ${PORT}`)
