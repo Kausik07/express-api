@@ -4,7 +4,8 @@ module.exports = {
         MONGODB_URI:
             'mongodb://localhost:27017/express-practice',
         PORT: 4000,
-        JWT_SECRET: '0389i45hjfg03hj450hj3w04th3084hjf038i4hjf903wihj4tfg903wihjn4tfg',
+        AUTH_PRIVATE_KEY: 'private.key',
+        AUTH_PUBLIC_KEY: 'public.key',
         MAIL_USER: process.env.MAIL_USER,
         MAIL_PASS: process.env.MAIL_PASS,
         MAIL_HOST: process.env.MAIL_HOST,
