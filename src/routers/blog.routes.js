@@ -1,5 +1,4 @@
 const { Router } = require('express')
-const { createUser, loginUser, verifyEmail } = require('../controllers/auth.controller')
 const { Create, Delete, ListAll, ListOne, Draft, Publish, Update, ListMine, PostComment, GetAllComments, GetComment } = require('../controllers/blog.controller')
 const { verifyUser, verifyAdmin } = require('../middlewares/auth.middleware')
 

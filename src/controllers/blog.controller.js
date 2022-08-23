@@ -1,9 +1,11 @@
 const Blog = require('../models/blog.model');
 const Comment = require('../models/comment.model');
+const { validateBlog } = require('../validators/blog.validation')
 
 const Create = async (req, res, next) => {
     try {
-        const { title, content } = req.body;
+        const blogData = await validateBlog(req.body);
+        const { title, content } = blogData;
         const author = req.userData.sub;
         const blog = new Blog({
             title,

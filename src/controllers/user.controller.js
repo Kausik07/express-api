@@ -1,5 +1,37 @@
 const User = require('../models/user.model')
+const { validateUserUpdate } = require('../validators/user.validation')
 
+const CreateUser = async (req, res, next) => {
+    try {
+        const { username, password, email, name } = req.body
+        const user = new User({
+            username,
+            password,
+            email,
+            name,
+            attributes: {
+                role: 'user',
+                isDisabled: false,
+                isEmailVerified: false,
+            }
+        })
+        await user.save()
+        res.status(200).json({
+            status: 'success',
+            message: 'User created successfully',
+            error: null,
+            data: {
+                username: user.username,
+                email: user.email,
+                name: user.name,
+                role: user.attributes.role,
+            }
+        })
+    }
+    catch(err){
+        next(err)
+    }
+}
 async function getCurrentUser(req, res, next){
     try {
         const user = await User.findById(req.userData.sub)
