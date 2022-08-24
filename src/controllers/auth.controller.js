@@ -1,25 +1,25 @@
 const User = require('../models/user.model')
 const { generateJWT } = require('../lib/auth.adapter')
-const { sendMail } = require('../services/mail.service')
+const { validateUser } = require('../validators/user.validation')
 
-async function createUser(req, res, next) {
+const CreateUser = async (req, res, next) => {
     try {
-        const { username, email, name, password  } = req.body
-        const checkIfUserNameExists = await User.findOne({ username })
-        const checkIfEmailExists = await User.findOne({ email })
-        if( checkIfUserNameExists || checkIfEmailExists ){
-            throw new Error('Username or email already exists')
-        }
+        const userRegData = validateUser(req.body)
+        const { username, password, email, name } = userRegData
         const user = new User({
             username,
             email,
             name,
+            attributes: {
+                role: 'user',
+                isDisabled: false,
+                isEmailVerified: false,
+            }
         })
-        await user.setPassword(password)
-        await user.generateEmailVerificationToken()
+
+        await user.setPassword(password.string())
         await user.save()
-        await sendMail(user.email,"Welcome and Verify", user.attributes.emailVerificationToken)
-        res.status(201).json({
+        res.status(200).json({
             status: 'success',
             message: 'User created successfully',
             error: null,
@@ -85,6 +85,6 @@ async function verifyEmail(req, res, next) {
 
 module.exports = {
     loginUser,
-    createUser,
+    CreateUser,
     verifyEmail,
 }

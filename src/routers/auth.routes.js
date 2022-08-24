@@ -1,9 +1,9 @@
 const { Router } = require('express')
-const { createUser, loginUser, verifyEmail } = require('../controllers/auth.controller')
+const { CreateUser, loginUser, verifyEmail } = require('../controllers/auth.controller')
 
 const route = new Router()
 
-route.post('/register', createUser)
+route.post('/register', CreateUser)
 
 route.post('/login', loginUser)
 
