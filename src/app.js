@@ -4,6 +4,7 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const { PORT } = require('./configs')
 const connectMongo = require('./services/mongodb.service')
+const {CacheClient : Cacher} = require('./services/redis.service')
 
 require('dotenv').config()
 
@@ -39,7 +40,9 @@ app.use("*", (req, res) => {
     })
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     connectMongo()
+    Cacher.init()
+    // Cacher.set('test', 'test')
     console.log(`🚀 API listening on port ${PORT}`)
 })
